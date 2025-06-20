@@ -20,13 +20,13 @@ namespace AdventOfCodeDay3 {
         static void PartOne(char[] input) {
             try {
                 List<char> buffer = new List<char>();
-                List<int> answers = new List<int>();
+                List<long> answers = new List<long>();
 
                 for(int i = 0; i < input.Length; i++) {
                    if (input[i] is 'm') {
                         bool isCorrectSyntax = true;
-                        int num1 = 0;
-                        int num2 = 0;
+                        long num1 = 0;
+                        long num2 = 0;
                         if(input[i+1] is 'u' && input[i+2] is'l' && input[i+3] is '(') {
                             i += 4;
                             while(isCorrectSyntax && i < input.Length) {
@@ -42,38 +42,40 @@ namespace AdventOfCodeDay3 {
                             }
 
                             if (isCorrectSyntax) {
-                                num1 = Int32.Parse(new string(buffer.ToArray()));
+                                if(buffer.Count > 3 || buffer.Count < 1) {
+                                    isCorrectSyntax = false;
+                                    continue;
+                                }
+                                i += 1;
+                                num1 = Int64.Parse(new string(buffer.ToArray()));
                                 buffer = new List<char>();
-
-                                while(isCorrectSyntax && i < input.Length) {
-                                    if(Char.IsDigit(input[i])) {
-                                        buffer.Add(input[i]); 
-                                    } else if (input[i] is ')') {
-                                        break;
-                                    } else {
-                                        isCorrectSyntax = false;
-                                        break;
-                                    }
-                                    i += 1;
-                                }
-
-                                if (isCorrectSyntax) {
-                                    Console.WriteLine(num2);
-                                    num2 = Int32.Parse(new string(buffer.ToArray()));
-                                    answers.Add(num1 * num2);
-                                    continue;
+                            }
+                            while(isCorrectSyntax && i < input.Length) {
+                                if(Char.IsDigit(input[i])) {
+                                    buffer.Add(input[i]); 
+                                } else if (input[i] is ')') {
+                                    break;
                                 } else {
+                                    isCorrectSyntax = false;
+                                    break;
+                                }
+                                i += 1;
+                            }
+
+                            if (isCorrectSyntax) {
+                                if(buffer.Count > 3 || buffer.Count < 1) {
+                                    isCorrectSyntax = false;
                                     continue;
                                 }
-                            } else {
-                                continue;
+                                num2 = Int64.Parse(new string(buffer.ToArray()));
+                                answers.Add(num1 * num2);
                             }
                         }
                    } else {
                        continue;
                    }
                 }
-                int total = answers.Sum();
+                long total = answers.Sum();
                 Console.WriteLine("Sum of multiplication: " + total);
             } catch (Exception ex) {
                 Console.WriteLine(ex.Message);
