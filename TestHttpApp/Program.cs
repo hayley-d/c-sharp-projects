@@ -1,7 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Newtonsoft.Json;
 
-string[] inputLines = File.ReadAllLines("input.txt");
+namespace TestHttpApp {
+    class Program {
+        static void Main(string[] args) {
+            string[] inputLines = File.ReadAllLines("input.txt");
 
-foreach(string line in inputLines) {
-    Console.WriteLine(line);
+            foreach(string line in inputLines) {
+                Console.WriteLine(line);
+            }
+        }
+    }
 }

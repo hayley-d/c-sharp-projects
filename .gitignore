@@ -1,1 +1,3 @@
-bin/\nobj/
+**/bin/
+**/obj/
+
