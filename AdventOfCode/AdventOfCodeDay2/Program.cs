@@ -68,8 +68,53 @@ namespace AdventOfCodeDay2 {
             }
             return false;
         }
+
+        static int ValidateOrderPart2(List<int> values) {
+            int errorCount = 0;
+            try {
+                if(values.Count < 2) {
+                    throw new Exception("Invalid values length");
+                } else {
+                    bool increasing = false;
+
+                    if(values[0] < values[1]) {
+                        increasing = true;
+                    } 
+
+                    for(int i = 0; i < values.Count-1; i++) {
+                        int diff = Math.Abs(values[i]-values[i+1]);
+
+                        if(diff > 3 || diff == 0) {
+                            errorCount += 1;
+                        }
+
+                        if(increasing && values[i] > values[i+1]) {
+                            errorCount += 1;
+                        }
+
+                        if(!increasing && values[i] < values[i+1]) {
+                            errorCount += 1;
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
+            return errorCount;
+        }
         
         static void PartTwo(string[] reports) {
+            int safeReports = 0;
+            foreach(string report in reports) {
+                // Extract all value in report
+                List<int> values = report.Split(" ").Select(x => Int32.Parse(x)).ToList();
+                if(ValidateOrderPart2(values) <= 1) {
+                    safeReports += 1;
+                }
+            }
+
+            Console.WriteLine("Safe Reports: " + safeReports);
+
         }
     }
 }
