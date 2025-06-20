@@ -6,6 +6,7 @@ using DotNetEnv;
 namespace LotrApi {
     class Program {
         static void Main(string[] args) {
+            const string BASE_URL = "https://the-one-api.dev/v2";
             try{
                 Env.Load();
                 IDictionary secrets = Environment.GetEnvironmentVariables();
