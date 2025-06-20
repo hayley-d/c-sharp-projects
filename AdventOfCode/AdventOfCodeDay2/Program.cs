@@ -26,38 +26,47 @@ namespace AdventOfCodeDay2 {
             foreach(string report in reports) {
                 // Extract all value in report
                 List<int> values = report.Split(" ").Select(x => Int32.Parse(x)).ToList();
-                // Flags
-                bool increasing = true;
-                bool sorted = true;
-                // Determine if increasing or decreasing
-                if(values.Count > 2 && values[0] > values[1]) {
-                    increasing = false;
-                } else if(values.Count < 2) {
-                    throw new Exception("Not enough reports to compare");
-                }
-                // Check if strictly increasing or decreasing
-                for(int i = 0; i < values.Count-2; i++) {
-                    int diff = Math.Abs(values[i] - values[i+1]);
-                    if(increasing && values[i] > values[i+1]) {
-                        sorted = false;
-                        break;
-                    } else if(!increasing && values[i] < values[i+1]) {
-                        sorted = false;
-                        break;
-                    } 
-                    // Diff can't be negative
-                    if(diff > 3 || diff == 0) {
-                        sorted = false;
-                        break;
-                    }
-                }
-
-                if(sorted) {
+                if(ValidateOrder(values)) {
                     safeReports += 1;
                 }
             }
 
             Console.WriteLine("Safe Reports: " + safeReports);
+        }
+
+        static bool ValidateOrder(List<int> values) {
+            try {
+                if(values.Count < 2) {
+                    throw new Exception("Invalid values length");
+                } else {
+                    bool increasing = false;
+
+                    if(values[0] < values[1]) {
+                        increasing = true;
+                    } 
+
+                    for(int i = 0; i < values.Count-1; i++) {
+                        int diff = Math.Abs(values[i]-values[i+1]);
+
+                        if(diff > 3 || diff == 0) {
+                            return false;
+                        }
+
+                        if(increasing && values[i] > values[i+1]) {
+                            return false;
+                        }
+
+                        if(!increasing && values[i] < values[i+1]) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+            } catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
+            return false;
         }
         
         static void PartTwo(string[] reports) {
