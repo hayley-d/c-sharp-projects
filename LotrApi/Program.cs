@@ -1,20 +1,26 @@
-﻿using System;
-using System.Collections;
-using System.Linq;
+﻿using System.Collections;
 using DotNetEnv;
 
 namespace LotrApi {
     class Program {
-        static void Main(string[] args) {
-            const string BASE_URL = "https://the-one-api.dev/v2";
+        static async Task  Main(string[] _) {
+            const string baseUrl = "https://the-one-api.dev/v2";
             try{
                 Env.Load();
-                IDictionary secrets = Environment.GetEnvironmentVariables();
+                IDictionary<string,string> secrets = Environment.GetEnvironmentVariables().Cast<DictionaryEntry>().
+                    Where(entry => entry.Key.ToString() !=  "" && entry.Value is not null).ToDictionary(
+                    entry => entry.Key.ToString() ?? "null",
+                    entry => entry.Value?.ToString() ?? "default"
+                    );
                 if(string.IsNullOrEmpty(secrets["API_KEY"])) {
-                    throw new Exception("Missing API key in enviroment file");
+                    throw new Exception("Missing API key in environment file");
                 }
-
-                Console.WriteLine(secrets["API_KEY"]);
+                BookApi api = new BookApi(baseUrl);
+                IDictionary<string,string> books = await api.GetBooks(secrets["API_KEY"]);
+                foreach (var book in books)
+                {
+                    Console.WriteLine($"{book.Key} => {book.Value}");
+                }
             } catch (Exception ex) {
                 Console.WriteLine(ex.Message);
             }
