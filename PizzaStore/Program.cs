@@ -40,4 +40,25 @@ data.Add(new Product("Chocolate Pizza",50.0));
 
 app.MapGet("/products", () => data);
 app.MapGet("/product/{id}", (int id) => data.SingleOrDefault(product => product.Id == id));
+
+app.MapPost("/products", (Product product) => {
+        data.Add(product);
+        return Results.Ok();
+);
+app.MapPut("/products", (Product product) => {
+        var matching = data.FirstOrDefault(p => p.Id == product.Id);
+        if (matching is null) {
+            data.Add(product);
+            return Results.NotFound($"Unable to find product with id {product.Id}");
+        } else {
+            matching.Name = product.Name;
+            matching.Price = product.Price;
+            return Results.Ok(matching);
+        }
+});
+
+app.MapDelete("/product/{id}", (int id) => {
+        data.RemoveAll(x => x.Id == id);
+        return Results.Ok();
+});
 app.Run();
