@@ -10,6 +10,9 @@ namespace LotrApi {
             try{
                 Env.Load();
                 IDictionary secrets = Environment.GetEnvironmentVariables();
+                if(string.IsNullOrEmpty(secrets["API_KEY"])) {
+                    throw new Exception("Missing API key in enviroment file");
+                }
 
                 Console.WriteLine(secrets["API_KEY"]);
             } catch (Exception ex) {
