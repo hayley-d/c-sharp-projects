@@ -44,7 +44,7 @@ app.MapGet("/product/{id}", (int id) => data.SingleOrDefault(product => product.
 app.MapPost("/products", (Product product) => {
         data.Add(product);
         return Results.Ok();
-);
+        });
 app.MapPut("/products", (Product product) => {
         var matching = data.FirstOrDefault(p => p.Id == product.Id);
         if (matching is null) {
