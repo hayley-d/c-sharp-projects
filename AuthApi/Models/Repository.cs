@@ -8,6 +8,10 @@ namespace AuthApi.Models {
 
         public async Task AddUser(User user) {
             await Task.Delay(200);
+            Console.WriteLine("Current Users: ");
+            foreach(var pair in this.Users) {
+                Console.WriteLine($"{pair.Key}: {pair.Value.PasswordHash}");
+            }
             Console.WriteLine($"Adding {user.Username} to the database");
             this.Users.Add(user.Username,user);
         }
@@ -15,6 +19,11 @@ namespace AuthApi.Models {
         public async Task<User?> FindUser(string username) {
             await Task.Delay(200);
             try {
+                Console.WriteLine("Current Users: ");
+                foreach(var pair in this.Users) {
+                    Console.WriteLine($"{pair.Key}: {pair.Value.PasswordHash}");
+                }
+
                 User? user = this.Users[username];
                 return user;
             } catch (Exception ex) {
