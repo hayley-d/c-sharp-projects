@@ -18,18 +18,13 @@ namespace AuthApi.Models {
 
         public async Task<User?> FindUser(string username) {
             await Task.Delay(200);
-            try {
-                Console.WriteLine("Current Users: ");
-                foreach(var pair in this.Users) {
-                    Console.WriteLine($"{pair.Key}: {pair.Value.PasswordHash}");
-                }
-
-                User? user = this.Users[username];
-                return user;
-            } catch (Exception ex) {
-                Console.WriteLine(ex.Message);
-                return null;
+            Console.WriteLine("Current Users: ");
+            foreach(var pair in this.Users) {
+                Console.WriteLine($"{pair.Key}: {pair.Value.PasswordHash}");
             }
+            Users.TryGetValue(username, out var user);
+            return user;
+            
         }
 
     }

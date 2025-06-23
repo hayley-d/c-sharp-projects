@@ -35,7 +35,7 @@ builder.Services
         };
     });
 
-builder.Services.AddScoped<Repository>();
+builder.Services.AddSingleton<Repository>();
 builder.Services.AddScoped<IPasswordHasherHelper, PasswordHasherHelper>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
